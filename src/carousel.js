@@ -271,22 +271,51 @@ function createCardTexture(project) {
   return new THREE.CanvasTexture(canvas);
 }
 
+// --- CoverFlow Transform ---
+
+function getCardTransform(offset) {
+  const clamped = Math.max(-3, Math.min(3, offset));
+
+  // X position: center card at 0, neighbors spaced out
+  let x;
+  if (Math.abs(clamped) <= 1) {
+    x = clamped * 3.2;
+  } else {
+    const sign = Math.sign(clamped);
+    const extra = Math.abs(clamped) - 1;
+    x = sign * (3.2 + extra * 2.6);
+  }
+
+  // Z depth: push side cards back
+  const z = -Math.abs(clamped) * 1.6;
+
+  // Y rotation: CoverFlow tilt via atan for natural curve
+  const rotY = -Math.atan(clamped * 0.8) * 0.85;
+
+  // Scale: active card biggest
+  const scale = Math.max(0.55, 1.0 - Math.abs(clamped) * 0.16);
+
+  // Opacity
+  const opacity = Math.max(0.25, 1.0 - Math.abs(clamped) * 0.28);
+
+  return { x, z, rotY, scale, opacity };
+}
+
+// --- Init Carousel ---
+
 export function initCarousel(container) {
-  // Scene setup
   const scene = new THREE.Scene();
+  const numCards = PROJECTS.length;
 
   const camera = new THREE.PerspectiveCamera(
-    50,
+    45,
     container.clientWidth / container.clientHeight,
     0.1,
-    100
+    50
   );
-  camera.position.set(0, 0.3, 9);
+  camera.position.set(0, 0, 8);
 
-  const renderer = new THREE.WebGLRenderer({
-    antialias: true,
-    alpha: true,
-  });
+  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setSize(container.clientWidth, container.clientHeight);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -294,34 +323,20 @@ export function initCarousel(container) {
   container.appendChild(renderer.domElement);
 
   // Lighting
-  const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
-  scene.add(ambientLight);
-
+  scene.add(new THREE.AmbientLight(0xffffff, 0.7));
   const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
   dirLight.position.set(5, 5, 5);
   scene.add(dirLight);
-
   const backLight = new THREE.DirectionalLight(0x3b82f6, 0.3);
   backLight.position.set(-3, 2, -5);
   scene.add(backLight);
 
   // Create cards
-  const cardGroup = new THREE.Group();
-  const numCards = PROJECTS.length;
-  const radius = 5;
-  const cardWidth = 2.8;
-  const cardHeight = 3.7;
-
   const cards = [];
-  let currentIndex = 0;
-
-  PROJECTS.forEach((project, i) => {
-    const angle = (i / numCards) * Math.PI * 2;
-
+  PROJECTS.forEach((project) => {
     const texture = createCardTexture(project);
     texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
-
-    const geometry = new THREE.PlaneGeometry(cardWidth, cardHeight);
+    const geometry = new THREE.PlaneGeometry(2.8, 3.7);
     const material = new THREE.MeshStandardMaterial({
       map: texture,
       side: THREE.FrontSide,
@@ -329,23 +344,17 @@ export function initCarousel(container) {
       roughness: 0.3,
       metalness: 0.1,
     });
-
     const mesh = new THREE.Mesh(geometry, material);
-    mesh.position.x = Math.sin(angle) * radius;
-    mesh.position.z = Math.cos(angle) * radius;
-
-    // Make card face outward
-    mesh.lookAt(
-      mesh.position.x * 2,
-      mesh.position.y,
-      mesh.position.z * 2
-    );
-
-    cardGroup.add(mesh);
-    cards.push({ mesh, material, angle });
+    scene.add(mesh);
+    cards.push({ mesh, material });
   });
 
-  scene.add(cardGroup);
+  // State
+  let activeIndex = 0;
+  let targetIndex = 0;
+  let isDragging = false;
+  let isInteracting = false;
+  const EASING = 0.12;
 
   // Indicators
   const indicatorContainer = document.getElementById('carousel-indicator');
@@ -358,131 +367,138 @@ export function initCarousel(container) {
   }
 
   function updateIndicator() {
-    const dots = indicatorContainer.querySelectorAll('.carousel-dot');
-    dots.forEach((dot, i) => {
-      dot.classList.toggle('active', i === currentIndex);
+    const idx = ((Math.round(targetIndex) % numCards) + numCards) % numCards;
+    indicatorContainer.querySelectorAll('.carousel-dot').forEach((dot, i) => {
+      dot.classList.toggle('active', i === idx);
     });
   }
 
-  // Rotation
-  let targetAngle = 0;
-  let currentAngle = 0;
-  let autoRotateSpeed = 0.001;
-  let isInteracting = false;
-
+  // Navigation
   function goTo(index) {
-    currentIndex = ((index % numCards) + numCards) % numCards;
-    targetAngle = -(currentIndex / numCards) * Math.PI * 2;
+    const wrappedTarget = ((index % numCards) + numCards) % numCards;
+
+    // Find shortest path (handle wrap-around)
+    let diff = wrappedTarget - (((Math.round(activeIndex) % numCards) + numCards) % numCards);
+    if (diff > numCards / 2) diff -= numCards;
+    if (diff < -numCards / 2) diff += numCards;
+
+    targetIndex = activeIndex + diff;
+    // Correct target to exact card position
+    targetIndex = Math.round(targetIndex);
+
     updateIndicator();
+    resetAutoAdvance();
   }
 
-  function next() {
-    goTo(currentIndex + 1);
+  function next() { goTo(Math.round(activeIndex) + 1); }
+  function prev() { goTo(Math.round(activeIndex) - 1); }
+
+  // Auto-advance
+  let autoTimer = null;
+  const AUTO_INTERVAL = 5000;
+
+  function startAutoAdvance() {
+    stopAutoAdvance();
+    autoTimer = setInterval(() => {
+      if (!isInteracting && !isDragging) next();
+    }, AUTO_INTERVAL);
   }
 
-  function prev() {
-    goTo(currentIndex - 1);
+  function stopAutoAdvance() {
+    if (autoTimer) { clearInterval(autoTimer); autoTimer = null; }
   }
 
-  // Mouse / touch drag
-  let startX = 0;
-  let dragAngle = 0;
-  let isDragging = false;
+  function resetAutoAdvance() {
+    isInteracting = true;
+    stopAutoAdvance();
+    setTimeout(() => {
+      isInteracting = false;
+      startAutoAdvance();
+    }, 4000);
+  }
 
-  container.addEventListener('mousedown', (e) => {
+  startAutoAdvance();
+
+  // Drag interaction
+  let dragStartX = 0;
+  let dragStartIndex = 0;
+  let dragVelocity = 0;
+  let lastDragX = 0;
+  let lastDragTime = 0;
+  const DRAG_SENS = 'ontouchstart' in window ? 180 : 250;
+
+  function onDragStart(clientX) {
     isDragging = true;
     isInteracting = true;
-    startX = e.clientX;
-    dragAngle = targetAngle;
+    stopAutoAdvance();
+    dragStartX = clientX;
+    dragStartIndex = activeIndex;
+    lastDragX = clientX;
+    lastDragTime = performance.now();
+    dragVelocity = 0;
     container.style.cursor = 'grabbing';
-  });
+  }
 
-  window.addEventListener('mousemove', (e) => {
+  function onDragMove(clientX) {
     if (!isDragging) return;
-    const delta = (e.clientX - startX) * 0.005;
-    targetAngle = dragAngle + delta;
-  });
+    const now = performance.now();
+    const dt = now - lastDragTime;
+    if (dt > 0) dragVelocity = (lastDragX - clientX) / dt;
+    lastDragX = clientX;
+    lastDragTime = now;
 
-  window.addEventListener('mouseup', () => {
+    const delta = (dragStartX - clientX) / DRAG_SENS;
+    activeIndex = dragStartIndex + delta;
+    targetIndex = activeIndex;
+  }
+
+  function onDragEnd() {
     if (!isDragging) return;
     isDragging = false;
     container.style.cursor = 'grab';
 
-    // Snap to nearest card
-    const step = (Math.PI * 2) / numCards;
-    const snapped = Math.round(targetAngle / step) * step;
-    targetAngle = snapped;
-    currentIndex = (((-Math.round(snapped / step)) % numCards) + numCards) % numCards;
-    updateIndicator();
+    let snapTarget = Math.round(activeIndex);
+    if (Math.abs(dragVelocity) > 0.3) {
+      snapTarget = dragVelocity > 0 ? Math.ceil(activeIndex) : Math.floor(activeIndex);
+    }
+    goTo(snapTarget);
+  }
 
-    setTimeout(() => {
-      isInteracting = false;
-    }, 2000);
-  });
-
+  container.addEventListener('mousedown', (e) => onDragStart(e.clientX));
+  window.addEventListener('mousemove', (e) => { if (isDragging) { e.preventDefault(); onDragMove(e.clientX); } });
+  window.addEventListener('mouseup', onDragEnd);
+  container.addEventListener('touchstart', (e) => onDragStart(e.touches[0].clientX), { passive: true });
+  container.addEventListener('touchmove', (e) => onDragMove(e.touches[0].clientX), { passive: true });
+  container.addEventListener('touchend', onDragEnd);
   container.style.cursor = 'grab';
-
-  // Touch support
-  container.addEventListener('touchstart', (e) => {
-    isDragging = true;
-    isInteracting = true;
-    startX = e.touches[0].clientX;
-    dragAngle = targetAngle;
-  }, { passive: true });
-
-  container.addEventListener('touchmove', (e) => {
-    if (!isDragging) return;
-    const delta = (e.touches[0].clientX - startX) * 0.005;
-    targetAngle = dragAngle + delta;
-  }, { passive: true });
-
-  container.addEventListener('touchend', () => {
-    if (!isDragging) return;
-    isDragging = false;
-
-    const step = (Math.PI * 2) / numCards;
-    const snapped = Math.round(targetAngle / step) * step;
-    targetAngle = snapped;
-    currentIndex = (((-Math.round(snapped / step)) % numCards) + numCards) % numCards;
-    updateIndicator();
-
-    setTimeout(() => {
-      isInteracting = false;
-    }, 2000);
-  });
 
   // Animation loop
   function animate() {
     requestAnimationFrame(animate);
 
-    // Auto-rotate when not interacting
-    if (!isInteracting && !isDragging) {
-      targetAngle += autoRotateSpeed;
-
-      // Update currentIndex based on angle
-      const step = (Math.PI * 2) / numCards;
-      const newIndex = (((-Math.round(targetAngle / step)) % numCards) + numCards) % numCards;
-      if (newIndex !== currentIndex) {
-        currentIndex = newIndex;
-        updateIndicator();
-      }
+    // Smooth easing toward target
+    if (!isDragging) {
+      activeIndex += (targetIndex - activeIndex) * EASING;
+      if (Math.abs(targetIndex - activeIndex) < 0.001) activeIndex = targetIndex;
     }
 
-    // Smooth rotation
-    currentAngle += (targetAngle - currentAngle) * 0.06;
-    cardGroup.rotation.y = currentAngle;
+    // Position each card
+    cards.forEach((card, i) => {
+      // Compute wrapped offset for infinite feel
+      let offset = i - ((activeIndex % numCards) + numCards) % numCards;
+      // Wrap offset to keep cards centered
+      if (offset > numCards / 2) offset -= numCards;
+      if (offset < -numCards / 2) offset += numCards;
 
-    // Update card visibility (fade cards facing away)
-    cards.forEach((card) => {
-      const worldDir = new THREE.Vector3();
-      card.mesh.getWorldDirection(worldDir);
+      const t = getCardTransform(offset);
+      card.mesh.position.set(t.x, 0, t.z);
+      card.mesh.rotation.set(0, t.rotY, 0);
+      card.mesh.scale.setScalar(t.scale);
+      card.material.opacity = t.opacity;
+      card.mesh.visible = Math.abs(offset) < 3;
 
-      const cameraDir = new THREE.Vector3();
-      camera.getWorldDirection(cameraDir);
-
-      const dot = worldDir.dot(cameraDir);
-      const opacity = THREE.MathUtils.smoothstep(dot, -0.5, 0.3);
-      card.material.opacity = 0.3 + opacity * 0.7;
+      // Render order: front cards on top
+      card.mesh.renderOrder = 100 - Math.abs(offset) * 10;
     });
 
     renderer.render(scene, camera);
@@ -492,9 +508,14 @@ export function initCarousel(container) {
 
   // Resize
   function onResize() {
-    camera.aspect = container.clientWidth / container.clientHeight;
+    const w = container.clientWidth;
+    camera.aspect = w / container.clientHeight;
+    if (w < 480) { camera.position.z = 11; camera.fov = 50; }
+    else if (w < 768) { camera.position.z = 10; camera.fov = 48; }
+    else if (w < 1024) { camera.position.z = 9; camera.fov = 46; }
+    else { camera.position.z = 8; camera.fov = 45; }
     camera.updateProjectionMatrix();
-    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.setSize(w, container.clientHeight);
   }
 
   window.addEventListener('resize', onResize);
