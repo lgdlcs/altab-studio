@@ -167,9 +167,50 @@ function applyTheme(theme) {
 
   const starsGroup = document.querySelector('.stars');
   if (starsGroup) starsGroup.setAttribute('opacity', theme.stars);
+}
 
-  const moonGlow = document.querySelectorAll('.moon-glow');
-  moonGlow.forEach((c) => c.setAttribute('opacity', theme.moon));
+// --- Celestial Bodies ---
+
+function updateCelestialBodies(hour) {
+  const sunGroup = document.getElementById('sun-group');
+  const moonGroup = document.getElementById('moon-group');
+  if (!sunGroup || !moonGroup) return;
+
+  // Sun arc: rises at 5h, zenith at 12h, sets at 19h
+  const sunStart = 5;
+  const sunEnd = 19;
+  const sunT = (hour - sunStart) / (sunEnd - sunStart);
+
+  if (sunT > 0 && sunT < 1) {
+    const x = 80 + sunT * 1280;
+    const y = 640 - 520 * Math.sin(sunT * Math.PI);
+    sunGroup.setAttribute('transform', `translate(${x}, ${y})`);
+    // Fade near horizon, full in middle
+    const sunOpacity = Math.min(1, Math.sin(sunT * Math.PI) * 2.5);
+    sunGroup.setAttribute('opacity', sunOpacity);
+  } else {
+    sunGroup.setAttribute('opacity', 0);
+  }
+
+  // Moon arc: rises at 19h, zenith at 0h, sets at 5h
+  let moonT;
+  if (hour >= 19) {
+    moonT = (hour - 19) / 10; // 19h → 0 .. 24h → 0.5
+  } else if (hour < 5) {
+    moonT = (hour + 5) / 10; // 0h → 0.5 .. 5h → 1
+  } else {
+    moonT = -1;
+  }
+
+  if (moonT >= 0 && moonT <= 1) {
+    const x = 80 + moonT * 1280;
+    const y = 640 - 480 * Math.sin(moonT * Math.PI);
+    moonGroup.setAttribute('transform', `translate(${x}, ${y})`);
+    const moonOpacity = Math.min(1, Math.sin(moonT * Math.PI) * 2);
+    moonGroup.setAttribute('opacity', moonOpacity);
+  } else {
+    moonGroup.setAttribute('opacity', 0);
+  }
 }
 
 function setStops(gradientId, colors) {
@@ -291,6 +332,7 @@ export function initTimeDial() {
   function update() {
     const theme = getThemeForHour(currentHour);
     applyTheme(theme);
+    updateCelestialBodies(currentHour);
     updateDialVisual(dial, currentHour);
   }
 

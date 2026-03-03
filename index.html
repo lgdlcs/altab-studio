@@ -69,6 +69,19 @@
               <feMergeNode in="SourceGraphic" />
             </feMerge>
           </filter>
+          <filter id="sun-glow">
+            <feGaussianBlur stdDeviation="12" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+          <radialGradient id="sun-gradient">
+            <stop offset="0%" stop-color="#ffffff" />
+            <stop offset="30%" stop-color="#fef3c7" />
+            <stop offset="60%" stop-color="#fbbf24" />
+            <stop offset="100%" stop-color="#f59e0b" stop-opacity="0" />
+          </radialGradient>
         </defs>
 
         <!-- Sky -->
@@ -96,9 +109,21 @@
           <circle cx="1180" cy="70" r="0.6" fill="#fff" opacity="0.6" />
         </g>
 
-        <!-- Moon glow -->
-        <circle class="moon-glow" cx="1100" cy="180" r="80" fill="#1a3a6a" opacity="0.3" filter="url(#glow)" />
-        <circle class="moon-glow" cx="1100" cy="180" r="25" fill="#c4d5e8" opacity="0.15" />
+        <!-- Sun (dynamic position) -->
+        <g id="sun-group" opacity="0">
+          <circle r="100" fill="url(#sun-gradient)" opacity="0.25" filter="url(#sun-glow)" />
+          <circle r="40" fill="#fbbf24" opacity="0.35" />
+          <circle r="22" fill="#fef3c7" opacity="0.9" />
+          <circle r="14" fill="#ffffff" opacity="0.7" />
+        </g>
+
+        <!-- Moon (dynamic position) -->
+        <g id="moon-group" opacity="0">
+          <circle r="70" fill="#94a3b8" opacity="0.06" filter="url(#glow)" />
+          <circle r="25" fill="#c4d5e8" opacity="0.2" />
+          <circle r="16" fill="#e2e8f0" opacity="0.35" />
+          <circle r="16" cx="5" cy="-4" fill="url(#sky-gradient)" opacity="0.3" />
+        </g>
 
         <!-- Far mountains (layer 1) -->
         <path class="mountain-layer" data-speed="0.02"
@@ -141,6 +166,8 @@
 
       <div class="hero-particles" id="hero-particles"></div>
     </div>
+
+    <div class="hero-overlay"></div>
 
     <div class="hero-content">
       <div class="hero-tag">

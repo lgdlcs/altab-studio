@@ -227,6 +227,16 @@ em {
   color: var(--text-primary);
 }
 
+.hero-actions .btn-ghost {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: rgba(241, 245, 249, 0.75);
+}
+
+.hero-actions .btn-ghost:hover {
+  border-color: rgba(255, 255, 255, 0.5);
+  color: #f1f5f9;
+}
+
 .btn-full {
   width: 100%;
   justify-content: center;
@@ -315,12 +325,21 @@ em {
   100% { opacity: 0; transform: translateY(-200px); }
 }
 
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  background: radial-gradient(ellipse 70% 50% at 50% 45%, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0.15) 60%, transparent 100%);
+  pointer-events: none;
+}
+
 .hero-content {
   position: relative;
   z-index: 10;
   text-align: center;
   max-width: 800px;
   padding: 0 2rem;
+  color: #f1f5f9;
 }
 
 .hero-tag {
@@ -328,7 +347,7 @@ em {
   align-items: center;
   gap: 0.5rem;
   font-size: 0.8125rem;
-  color: var(--text-secondary);
+  color: rgba(241, 245, 249, 0.7);
   letter-spacing: 0.1em;
   text-transform: uppercase;
   margin-bottom: 2rem;
@@ -356,6 +375,8 @@ em {
   line-height: 1.15;
   letter-spacing: -0.02em;
   margin-bottom: 1.5rem;
+  color: #f1f5f9;
+  text-shadow: 0 2px 30px rgba(0, 0, 0, 0.4), 0 4px 60px rgba(0, 0, 0, 0.2);
 }
 
 .line-wrapper {
@@ -370,11 +391,12 @@ em {
 
 .hero-subtitle {
   font-size: clamp(1rem, 1.8vw, 1.125rem);
-  color: var(--text-secondary);
+  color: rgba(241, 245, 249, 0.75);
   max-width: 600px;
   margin: 0 auto 2.5rem;
   line-height: 1.7;
   opacity: 0;
+  text-shadow: 0 1px 15px rgba(0, 0, 0, 0.3);
 }
 
 .hero-actions {
@@ -402,7 +424,7 @@ em {
   font-size: 0.6875rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: rgba(241, 245, 249, 0.4);
 }
 
 .hero-scroll-line {
