@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Altab Studio — Design & Automatisation Web | Annecy</title>
+  <meta name="description" content="Studio de design et d'automatisation web basé à Annecy. Sites vitrines, identité visuelle et solutions digitales sur-mesure." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+
+  <!-- ========== LOADER ========== -->
+  <div id="loader">
+    <div class="loader-inner">
+      <div class="loader-logo">ALTAB<span class="loader-logo-light">STUDIO</span></div>
+      <div class="loader-bar">
+        <div class="loader-bar-fill"></div>
+      </div>
+      <div class="loader-counter">0</div>
+    </div>
+  </div>
+
+  <!-- ========== NAVIGATION ========== -->
+  <nav id="navbar">
+    <a href="#" class="nav-logo">ALTAB<span>STUDIO</span></a>
+    <div class="nav-links">
+      <a href="#projects">Projets</a>
+      <a href="#competences">Expertise</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <a href="#contact" class="nav-cta">Démarrer un projet</a>
+  </nav>
+
+  <!-- ========== HERO ========== -->
+  <section id="hero">
+    <div class="hero-landscape">
+      <svg class="landscape-svg" viewBox="0 0 1440 900" preserveAspectRatio="xMidYMax slice" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="sky-gradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#050810" />
+            <stop offset="40%" stop-color="#0a1628" />
+            <stop offset="70%" stop-color="#122244" />
+            <stop offset="100%" stop-color="#1a3a6a" />
+          </linearGradient>
+          <linearGradient id="lake-gradient" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#152d54" />
+            <stop offset="40%" stop-color="#0f2040" />
+            <stop offset="100%" stop-color="#080e1a" />
+          </linearGradient>
+          <linearGradient id="mountain-far" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#1a2d50" />
+            <stop offset="100%" stop-color="#142040" />
+          </linearGradient>
+          <linearGradient id="mountain-mid" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0f1f3a" />
+            <stop offset="100%" stop-color="#0c1830" />
+          </linearGradient>
+          <linearGradient id="mountain-near" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#0a1525" />
+            <stop offset="100%" stop-color="#070e1a" />
+          </linearGradient>
+          <filter id="glow">
+            <feGaussianBlur stdDeviation="2" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+
+        <!-- Sky -->
+        <rect width="1440" height="900" fill="url(#sky-gradient)" />
+
+        <!-- Stars -->
+        <g class="stars" opacity="0.8">
+          <circle cx="120" cy="80" r="1.2" fill="#fff" opacity="0.6" />
+          <circle cx="350" cy="45" r="0.8" fill="#fff" opacity="0.4" />
+          <circle cx="580" cy="120" r="1" fill="#fff" opacity="0.7" />
+          <circle cx="780" cy="60" r="1.5" fill="#fff" opacity="0.5" />
+          <circle cx="950" cy="100" r="0.8" fill="#fff" opacity="0.6" />
+          <circle cx="1100" cy="35" r="1.2" fill="#fff" opacity="0.4" />
+          <circle cx="1300" cy="90" r="1" fill="#fff" opacity="0.7" />
+          <circle cx="200" cy="180" r="0.6" fill="#fff" opacity="0.3" />
+          <circle cx="450" cy="200" r="1" fill="#fff" opacity="0.5" />
+          <circle cx="700" cy="170" r="0.7" fill="#fff" opacity="0.4" />
+          <circle cx="1050" cy="190" r="1.3" fill="#fff" opacity="0.6" />
+          <circle cx="1250" cy="150" r="0.9" fill="#fff" opacity="0.5" />
+          <circle cx="80" cy="250" r="0.5" fill="#fff" opacity="0.3" />
+          <circle cx="630" cy="30" r="1.1" fill="#fff" opacity="0.8" />
+          <circle cx="900" cy="230" r="0.7" fill="#fff" opacity="0.3" />
+          <circle cx="1400" cy="200" r="0.8" fill="#fff" opacity="0.5" />
+          <circle cx="270" cy="130" r="1.4" fill="#fff" opacity="0.4" />
+          <circle cx="1180" cy="70" r="0.6" fill="#fff" opacity="0.6" />
+        </g>
+
+        <!-- Moon glow -->
+        <circle cx="1100" cy="180" r="80" fill="#1a3a6a" opacity="0.3" filter="url(#glow)" />
+        <circle cx="1100" cy="180" r="25" fill="#c4d5e8" opacity="0.15" />
+
+        <!-- Far mountains (layer 1) -->
+        <path class="mountain-layer" data-speed="0.02"
+          d="M0,520 L80,460 L180,490 L300,380 L420,440 L520,360 L650,420 L720,340 L840,400 L950,320 L1050,380 L1150,300 L1250,360 L1350,330 L1440,370 L1440,560 L0,560Z"
+          fill="url(#mountain-far)" />
+
+        <!-- Mid mountains (layer 2) -->
+        <path class="mountain-layer" data-speed="0.04"
+          d="M0,560 L100,500 L200,530 L350,440 L480,510 L580,430 L700,480 L820,400 L920,460 L1040,390 L1160,450 L1280,410 L1380,440 L1440,420 L1440,600 L0,600Z"
+          fill="url(#mountain-mid)" />
+
+        <!-- Near mountains (layer 3) -->
+        <path class="mountain-layer" data-speed="0.06"
+          d="M0,600 L60,560 L160,580 L280,520 L380,560 L500,500 L620,540 L740,490 L860,530 L960,480 L1080,520 L1200,490 L1320,510 L1440,480 L1440,640 L0,640Z"
+          fill="url(#mountain-near)" />
+
+        <!-- Treeline silhouette -->
+        <path
+          d="M0,620 L20,610 L35,620 L50,605 L65,618 L80,600 L95,615 L115,598 L130,612 L150,595 L170,610 L185,600 L205,615 L220,595 L240,608 L260,590 L280,605 L300,592 L320,610 L340,598 L360,612 L380,595 L400,608 L420,590 L440,605 L460,595 L480,612 L500,598 L520,610 L540,593 L560,608 L580,592 L600,605 L620,598 L640,615 L660,600 L680,610 L700,595 L720,608 L740,592 L760,605 L780,598 L800,615 L820,600 L840,610 L860,595 L880,608 L900,592 L920,605 L940,598 L960,615 L980,600 L1000,610 L1020,595 L1040,608 L1060,592 L1080,605 L1100,598 L1120,615 L1140,600 L1160,610 L1180,595 L1200,608 L1220,592 L1240,605 L1260,598 L1280,610 L1300,600 L1320,612 L1340,598 L1360,608 L1380,595 L1400,610 L1420,600 L1440,608 L1440,640 L0,640Z"
+          fill="#060d18" />
+
+        <!-- Lake surface -->
+        <rect y="640" width="1440" height="260" fill="url(#lake-gradient)" />
+
+        <!-- Lake reflections -->
+        <g class="lake-reflections" opacity="0.15">
+          <line x1="100" y1="660" x2="300" y2="660" stroke="#3b82f6" stroke-width="1" />
+          <line x1="500" y1="675" x2="650" y2="675" stroke="#3b82f6" stroke-width="0.8" />
+          <line x1="800" y1="665" x2="1000" y2="665" stroke="#3b82f6" stroke-width="1.2" />
+          <line x1="200" y1="690" x2="450" y2="690" stroke="#2563eb" stroke-width="0.6" />
+          <line x1="700" y1="700" x2="900" y2="700" stroke="#3b82f6" stroke-width="0.8" />
+          <line x1="1100" y1="670" x2="1350" y2="670" stroke="#2563eb" stroke-width="1" />
+          <line x1="300" y1="720" x2="550" y2="720" stroke="#1d4ed8" stroke-width="0.5" />
+          <line x1="900" y1="730" x2="1100" y2="730" stroke="#1d4ed8" stroke-width="0.6" />
+          <line x1="50" y1="740" x2="250" y2="740" stroke="#1e3a5f" stroke-width="0.4" />
+          <line x1="600" y1="750" x2="800" y2="750" stroke="#1e3a5f" stroke-width="0.5" />
+          <line x1="1200" y1="710" x2="1400" y2="710" stroke="#2563eb" stroke-width="0.7" />
+        </g>
+      </svg>
+
+      <div class="hero-particles" id="hero-particles"></div>
+    </div>
+
+    <div class="hero-content">
+      <div class="hero-tag">
+        <span class="hero-tag-dot"></span>
+        <span>Studio créatif basé à Annecy</span>
+      </div>
+      <h1 class="hero-title">
+        <span class="line-wrapper"><span class="line-inner">Votre vision digitale,</span></span>
+        <span class="line-wrapper"><span class="line-inner">sculptée au sommet.</span></span>
+      </h1>
+      <p class="hero-subtitle">Design, développement & automatisation web — nous transformons vos idées en expériences digitales mémorables.</p>
+      <div class="hero-actions">
+        <a href="#contact" class="btn btn-primary">Démarrer un projet</a>
+        <a href="#projects" class="btn btn-ghost">Voir nos projets</a>
+      </div>
+    </div>
+
+    <div class="hero-scroll">
+      <span>Scroll</span>
+      <div class="hero-scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ========== PROJECTS ========== -->
+  <section id="projects">
+    <div class="section-container">
+      <div class="section-header">
+        <span class="section-tag">Nos Projets</span>
+        <h2>Des réalisations qui <em>marquent</em></h2>
+        <p class="section-desc">Découvrez les types de projets sur lesquels nous travaillons au quotidien.</p>
+      </div>
+      <div class="carousel-wrapper">
+        <div class="carousel-canvas-container" id="carousel-container"></div>
+        <div class="carousel-controls">
+          <button class="carousel-btn carousel-prev" id="carousel-prev" aria-label="Projet précédent">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          </button>
+          <div class="carousel-indicator" id="carousel-indicator"></div>
+          <button class="carousel-btn carousel-next" id="carousel-next" aria-label="Projet suivant">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== COMPETENCES ========== -->
+  <section id="competences">
+    <div class="section-container">
+      <div class="section-header">
+        <span class="section-tag">Expertise</span>
+        <h2>Ce qu'on fait de <em>mieux</em></h2>
+        <p class="section-desc">Trois piliers pour propulser votre présence en ligne.</p>
+      </div>
+      <div class="competences-grid">
+
+        <div class="competence-card" data-index="0">
+          <div class="card-glow"></div>
+          <div class="card-icon">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="4" y="8" width="32" height="24" rx="3" stroke="#3b82f6" stroke-width="2"/>
+              <circle cx="15" cy="20" r="4" stroke="#3b82f6" stroke-width="2"/>
+              <path d="M22 16h10M22 20h8M22 24h6" stroke="#3b82f6" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>Design & Création</h3>
+          <p>Interfaces élégantes, identité visuelle forte et direction artistique qui reflète votre marque. Du wireframe au pixel-perfect.</p>
+          <ul class="card-tags">
+            <li>UI/UX Design</li>
+            <li>Identité visuelle</li>
+            <li>Direction artistique</li>
+          </ul>
+        </div>
+
+        <div class="competence-card" data-index="1">
+          <div class="card-glow"></div>
+          <div class="card-icon">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 8l-8 12 8 12" stroke="#06b6d4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M28 8l8 12-8 12" stroke="#06b6d4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M23 6L17 34" stroke="#06b6d4" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>Développement Web</h3>
+          <p>Sites vitrines performants, applications web modernes et intégrations sur-mesure. Code propre, rapide et accessible.</p>
+          <ul class="card-tags">
+            <li>Sites vitrines</li>
+            <li>Applications web</li>
+            <li>Intégration</li>
+          </ul>
+        </div>
+
+        <div class="competence-card" data-index="2">
+          <div class="card-glow"></div>
+          <div class="card-icon">
+            <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="12" cy="20" r="4" stroke="#8b5cf6" stroke-width="2"/>
+              <circle cx="28" cy="12" r="4" stroke="#8b5cf6" stroke-width="2"/>
+              <circle cx="28" cy="28" r="4" stroke="#8b5cf6" stroke-width="2"/>
+              <path d="M16 18l8-4M16 22l8 4" stroke="#8b5cf6" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3>Automatisation & Growth</h3>
+          <p>Automatisez vos processus, connectez vos outils et gagnez en efficacité. SEO, analytics et stratégie de croissance digitale.</p>
+          <ul class="card-tags">
+            <li>Automatisation</li>
+            <li>SEO & Analytics</li>
+            <li>Intégrations API</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== CONTACT ========== -->
+  <section id="contact">
+    <div class="section-container">
+      <div class="contact-wrapper">
+        <div class="contact-info">
+          <span class="section-tag">Contact</span>
+          <h2>Parlons de votre <em>projet</em></h2>
+          <p>Basés à Annecy, au pied des Alpes, nous accompagnons des clients dans toute la France et au-delà. Racontez-nous votre vision.</p>
+          <div class="contact-details">
+            <a href="mailto:hello@altabstudio.com" class="contact-link">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="16" height="12" rx="2"/><path d="M2 4l8 6 8-6"/></svg>
+              hello@altabstudio.com
+            </a>
+            <span class="contact-link">
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 2C6.5 2 4 5 4 8.5 4 13 10 18 10 18s6-5 6-9.5C16 5 13.5 2 10 2z"/><circle cx="10" cy="8.5" r="2.5"/></svg>
+              Annecy, Haute-Savoie
+            </span>
+          </div>
+        </div>
+        <form class="contact-form" id="contact-form">
+          <div class="form-row">
+            <div class="form-group">
+              <input type="text" name="name" placeholder="Votre nom" required />
+            </div>
+            <div class="form-group">
+              <input type="email" name="email" placeholder="Votre email" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <input type="text" name="subject" placeholder="Sujet" />
+          </div>
+          <div class="form-group">
+            <textarea name="message" rows="5" placeholder="Décrivez votre projet..." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-full">
+            <span>Envoyer le message</span>
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10h12M12 4l6 6-6 6"/></svg>
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer id="footer">
+    <div class="footer-inner">
+      <div class="footer-top">
+        <a href="#" class="footer-logo">ALTAB<span>STUDIO</span></a>
+        <div class="footer-nav">
+          <a href="#projects">Projets</a>
+          <a href="#competences">Expertise</a>
+          <a href="#contact">Contact</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Altab Studio. Tous droits réservés.</span>
+        <span>Fait avec passion à Annecy</span>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
