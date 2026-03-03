@@ -2,39 +2,44 @@ import * as THREE from 'three';
 
 const PROJECTS = [
   {
-    title: 'Sites Vitrines',
-    desc: 'Des vitrines digitales qui captent\nl\'attention et convertissent.',
+    title: 'PeakPick',
+    tag: 'Application Web',
+    desc: 'App de décision pour skieurs.\nScore météo, neige, affluence\nen temps réel.',
     color1: '#3b82f6',
     color2: '#1d4ed8',
-    icon: 'window',
+    icon: 'mountain',
   },
   {
-    title: 'Automatisation',
-    desc: 'Optimisez vos processus avec\ndes workflows intelligents.',
-    color1: '#8b5cf6',
-    color2: '#6d28d9',
-    icon: 'bolt',
-  },
-  {
-    title: 'Identité Visuelle',
-    desc: 'Une identité de marque unique\nqui vous démarque.',
+    title: 'Aero-Bi',
+    tag: 'Site Vitrine',
+    desc: 'Site immersif pour une école\nde parapente à Morzine.\nSVG interactifs, avis Google.',
     color1: '#06b6d4',
     color2: '#0891b2',
-    icon: 'palette',
+    icon: 'paraglide',
   },
   {
-    title: 'Applications Web',
-    desc: 'Des apps sur-mesure,\nperformantes et intuitives.',
-    color1: '#10b981',
-    color2: '#059669',
-    icon: 'app',
-  },
-  {
-    title: 'SEO & Croissance',
-    desc: 'Boostez votre visibilité\net votre présence en ligne.',
+    title: 'Mezzanine',
+    tag: 'Site & Réservation',
+    desc: 'Vitrine et réservation en ligne\npour un restaurant de montagne\nà Samoëns.',
     color1: '#f59e0b',
     color2: '#d97706',
-    icon: 'chart',
+    icon: 'restaurant',
+  },
+  {
+    title: 'Limedia',
+    tag: 'Plateforme',
+    desc: 'Gestion documentaire entreprise.\nReact, NestJS, PostgreSQL.\nRôles et suivi de progression.',
+    color1: '#8b5cf6',
+    color2: '#6d28d9',
+    icon: 'document',
+  },
+  {
+    title: 'Cosmic TD',
+    tag: 'Jeu Multijoueur',
+    desc: 'Tower Defense + Auto-Chess\nen temps réel. Phaser 3,\nWebSocket, 2-4 joueurs.',
+    color1: '#10b981',
+    color2: '#059669',
+    icon: 'game',
   },
 ];
 
@@ -63,83 +68,116 @@ function drawIcon(ctx, type, cx, cy, size) {
   const s = size;
 
   switch (type) {
-    case 'window':
+    case 'mountain':
+      // Mountain peaks (ski/alps)
       ctx.beginPath();
-      roundRect(ctx, cx - s, cy - s * 0.7, s * 2, s * 1.4, 6);
+      ctx.moveTo(cx - s * 1.2, cy + s * 0.8);
+      ctx.lineTo(cx - s * 0.4, cy - s * 0.9);
+      ctx.lineTo(cx - s * 0.1, cy - s * 0.3);
+      ctx.lineTo(cx + s * 0.2, cy - s * 1);
+      ctx.lineTo(cx + s * 1.2, cy + s * 0.8);
+      ctx.closePath();
       ctx.stroke();
+      // Snow cap
+      ctx.fillStyle = 'rgba(255,255,255,0.9)';
       ctx.beginPath();
-      ctx.moveTo(cx - s, cy - s * 0.25);
-      ctx.lineTo(cx + s, cy - s * 0.25);
-      ctx.stroke();
-      // Dots in title bar
-      ctx.fillStyle = 'rgba(255,255,255,0.5)';
-      [cx - s * 0.7, cx - s * 0.45, cx - s * 0.2].forEach((dx) => {
-        ctx.beginPath();
-        ctx.arc(dx, cy - s * 0.48, 3, 0, Math.PI * 2);
-        ctx.fill();
-      });
-      break;
-
-    case 'bolt':
-      ctx.beginPath();
-      ctx.moveTo(cx + s * 0.1, cy - s);
-      ctx.lineTo(cx - s * 0.5, cy + s * 0.1);
-      ctx.lineTo(cx + s * 0.05, cy + s * 0.1);
-      ctx.lineTo(cx - s * 0.1, cy + s);
-      ctx.lineTo(cx + s * 0.5, cy - s * 0.1);
-      ctx.lineTo(cx - s * 0.05, cy - s * 0.1);
+      ctx.moveTo(cx + s * 0.2, cy - s * 1);
+      ctx.lineTo(cx + s * 0.55, cy - s * 0.45);
+      ctx.lineTo(cx + s * 0.35, cy - s * 0.55);
+      ctx.lineTo(cx + s * 0.05, cy - s * 0.4);
+      ctx.lineTo(cx - s * 0.1, cy - s * 0.55);
       ctx.closePath();
       ctx.fill();
       break;
 
-    case 'palette':
+    case 'paraglide':
+      // Paraglider wing (arc)
       ctx.beginPath();
-      ctx.arc(cx, cy, s, 0, Math.PI * 2);
+      ctx.moveTo(cx - s * 1.1, cy - s * 0.2);
+      ctx.quadraticCurveTo(cx, cy - s * 1.3, cx + s * 1.1, cy - s * 0.2);
       ctx.stroke();
-      // Color dots
-      const colors = ['#ff6b6b', '#ffd93d', '#6bcb77', '#4d96ff'];
-      colors.forEach((color, i) => {
-        const angle = (i / colors.length) * Math.PI * 2 - Math.PI / 2;
-        const dx = cx + Math.cos(angle) * s * 0.55;
-        const dy = cy + Math.sin(angle) * s * 0.55;
-        ctx.beginPath();
-        ctx.arc(dx, dy, s * 0.18, 0, Math.PI * 2);
-        ctx.fillStyle = color;
-        ctx.fill();
-      });
-      break;
-
-    case 'app':
+      // Lines to pilot
       ctx.beginPath();
-      roundRect(ctx, cx - s * 0.5, cy - s, s * 1, s * 2, 8);
+      ctx.moveTo(cx - s * 0.7, cy - s * 0.35);
+      ctx.lineTo(cx, cy + s * 0.8);
+      ctx.moveTo(cx + s * 0.7, cy - s * 0.35);
+      ctx.lineTo(cx, cy + s * 0.8);
       ctx.stroke();
+      // Pilot dot
       ctx.beginPath();
-      ctx.moveTo(cx - s * 0.5, cy - s * 0.55);
-      ctx.lineTo(cx + s * 0.5, cy - s * 0.55);
-      ctx.stroke();
-      ctx.beginPath();
-      ctx.arc(cx, cy + s * 0.7, 4, 0, Math.PI * 2);
+      ctx.arc(cx, cy + s * 0.85, s * 0.15, 0, Math.PI * 2);
       ctx.fill();
       break;
 
-    case 'chart':
-      // Bars
-      const barW = s * 0.3;
-      const bars = [0.4, 0.7, 0.5, 1.0];
-      bars.forEach((h, i) => {
-        const bx = cx - s + i * (barW + s * 0.16);
-        const bh = h * s * 1.5;
-        ctx.fillStyle = `rgba(255,255,255,${0.4 + h * 0.5})`;
-        roundRect(ctx, bx, cy + s * 0.75 - bh, barW, bh, 3);
-        ctx.fill();
-      });
-      // Arrow
-      ctx.strokeStyle = 'rgba(255,255,255,0.9)';
+    case 'restaurant':
+      // Fork
       ctx.beginPath();
-      ctx.moveTo(cx - s, cy - s * 0.6);
-      ctx.lineTo(cx, cy - s * 0.9);
-      ctx.lineTo(cx + s, cy - s * 0.4);
+      ctx.moveTo(cx - s * 0.5, cy - s);
+      ctx.lineTo(cx - s * 0.5, cy - s * 0.2);
+      ctx.moveTo(cx - s * 0.5, cy - s);
+      ctx.lineTo(cx - s * 0.5, cy + s);
+      ctx.moveTo(cx - s * 0.7, cy - s);
+      ctx.lineTo(cx - s * 0.7, cy - s * 0.2);
+      ctx.moveTo(cx - s * 0.3, cy - s);
+      ctx.lineTo(cx - s * 0.3, cy - s * 0.2);
       ctx.stroke();
+      // Knife
+      ctx.beginPath();
+      ctx.moveTo(cx + s * 0.5, cy - s);
+      ctx.lineTo(cx + s * 0.5, cy + s);
+      ctx.moveTo(cx + s * 0.5, cy - s);
+      ctx.quadraticCurveTo(cx + s * 0.9, cy - s * 0.3, cx + s * 0.5, cy - s * 0.1);
+      ctx.stroke();
+      break;
+
+    case 'document':
+      // Paper sheet
+      ctx.beginPath();
+      roundRect(ctx, cx - s * 0.7, cy - s, s * 1.4, s * 2, 4);
+      ctx.stroke();
+      // Folded corner
+      ctx.beginPath();
+      ctx.moveTo(cx + s * 0.3, cy - s);
+      ctx.lineTo(cx + s * 0.7, cy - s + s * 0.4);
+      ctx.stroke();
+      // Text lines
+      ctx.lineWidth = 2;
+      ctx.globalAlpha = 0.5;
+      ctx.beginPath();
+      ctx.moveTo(cx - s * 0.4, cy - s * 0.3);
+      ctx.lineTo(cx + s * 0.4, cy - s * 0.3);
+      ctx.moveTo(cx - s * 0.4, cy);
+      ctx.lineTo(cx + s * 0.3, cy);
+      ctx.moveTo(cx - s * 0.4, cy + s * 0.3);
+      ctx.lineTo(cx + s * 0.45, cy + s * 0.3);
+      ctx.moveTo(cx - s * 0.4, cy + s * 0.6);
+      ctx.lineTo(cx + s * 0.2, cy + s * 0.6);
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+      ctx.lineWidth = 3;
+      break;
+
+    case 'game':
+      // Tower
+      ctx.beginPath();
+      ctx.moveTo(cx - s * 0.4, cy + s);
+      ctx.lineTo(cx - s * 0.4, cy - s * 0.3);
+      ctx.lineTo(cx - s * 0.6, cy - s * 0.3);
+      ctx.lineTo(cx - s * 0.6, cy - s * 0.6);
+      ctx.lineTo(cx - s * 0.3, cy - s * 0.6);
+      ctx.lineTo(cx, cy - s * 1.1);
+      ctx.lineTo(cx + s * 0.3, cy - s * 0.6);
+      ctx.lineTo(cx + s * 0.6, cy - s * 0.6);
+      ctx.lineTo(cx + s * 0.6, cy - s * 0.3);
+      ctx.lineTo(cx + s * 0.4, cy - s * 0.3);
+      ctx.lineTo(cx + s * 0.4, cy + s);
+      ctx.closePath();
+      ctx.stroke();
+      // Energy burst
+      ctx.fillStyle = 'rgba(255,255,255,0.4)';
+      ctx.beginPath();
+      ctx.arc(cx, cy - s * 1.1, s * 0.25, 0, Math.PI * 2);
+      ctx.fill();
       break;
   }
 
@@ -200,7 +238,14 @@ function createCardTexture(project) {
   ctx.font = 'bold 38px system-ui, -apple-system, "Segoe UI", sans-serif';
   ctx.fillStyle = '#ffffff';
   ctx.textAlign = 'center';
-  ctx.fillText(project.title, 256, 370);
+  ctx.fillText(project.title, 256, 365);
+
+  // Tag (project type)
+  if (project.tag) {
+    ctx.font = '600 14px system-ui, -apple-system, "Segoe UI", sans-serif';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+    ctx.fillText(project.tag.toUpperCase(), 256, 395);
+  }
 
   // Divider
   const divGrad = ctx.createLinearGradient(156, 0, 356, 0);
@@ -208,21 +253,20 @@ function createCardTexture(project) {
   divGrad.addColorStop(0.5, 'rgba(255,255,255,0.4)');
   divGrad.addColorStop(1, 'rgba(255,255,255,0)');
   ctx.fillStyle = divGrad;
-  ctx.fillRect(156, 395, 200, 1);
+  ctx.fillRect(156, 415, 200, 1);
 
   // Description
-  ctx.font = '20px system-ui, -apple-system, "Segoe UI", sans-serif';
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.75)';
+  ctx.font = '19px system-ui, -apple-system, "Segoe UI", sans-serif';
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
   const lines = project.desc.split('\n');
   lines.forEach((line, i) => {
-    ctx.fillText(line, 256, 435 + i * 30);
+    ctx.fillText(line, 256, 452 + i * 28);
   });
 
   // Bottom tag
-  ctx.font = '600 13px system-ui, -apple-system, "Segoe UI", sans-serif';
-  ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
-  ctx.letterSpacing = '3px';
-  ctx.fillText('ALTAB STUDIO', 256, 630);
+  ctx.font = '600 12px system-ui, -apple-system, "Segoe UI", sans-serif';
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
+  ctx.fillText('ALTAB STUDIO', 256, 635);
 
   return new THREE.CanvasTexture(canvas);
 }
