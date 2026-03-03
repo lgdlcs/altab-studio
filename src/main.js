@@ -1,6 +1,7 @@
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { initCarousel } from './carousel.js';
+import { initTimeDial } from './time-dial.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -299,6 +300,7 @@ async function init() {
   initNavbar();
   initScrollAnimations();
   initContactForm();
+  initTimeDial();
 
   // Init Three.js carousel
   const carouselContainer = document.getElementById('carousel-container');

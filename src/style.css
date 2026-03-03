@@ -35,6 +35,7 @@ body {
   color: var(--text-primary);
   overflow-x: hidden;
   line-height: 1.6;
+  transition: background-color 0.6s ease, color 0.6s ease;
 }
 
 a {
@@ -139,7 +140,7 @@ em {
 }
 
 #navbar.scrolled {
-  background: rgba(5, 8, 16, 0.85);
+  background: color-mix(in srgb, var(--bg-primary) 85%, transparent);
   backdrop-filter: blur(20px);
   padding: 1rem 3rem;
   border-bottom: 1px solid var(--border-card);
@@ -422,6 +423,7 @@ em {
 
 section {
   padding: 8rem 0;
+  transition: background-color 0.6s ease;
 }
 
 .section-container {
@@ -702,11 +704,11 @@ a.contact-link:hover {
   font-family: var(--font-body);
   font-size: 0.9375rem;
   color: var(--text-primary);
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--bg-card);
   border: 1px solid var(--border-card);
   border-radius: 12px;
   outline: none;
-  transition: all 0.3s;
+  transition: all 0.3s, background-color 0.6s ease, color 0.6s ease;
 }
 
 .form-group input::placeholder,
@@ -856,5 +858,155 @@ a.contact-link:hover {
 
   .carousel-canvas-container {
     height: 320px;
+  }
+}
+
+/* ============================================
+   TIME DIAL
+   ============================================ */
+
+.time-dial {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 500;
+  width: 100px;
+  height: 100px;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: transform 0.3s ease;
+}
+
+.time-dial:hover {
+  transform: scale(1.08);
+}
+
+.time-dial.dragging {
+  transform: scale(1.12);
+}
+
+.dial-track {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(
+    from 180deg,
+    #0a1628 0deg,
+    #0a1628 60deg,
+    #c05040 80deg,
+    #ff8f00 90deg,
+    #ffc040 100deg,
+    #87ceeb 130deg,
+    #60a5fa 180deg,
+    #87ceeb 230deg,
+    #ffc040 260deg,
+    #ff7030 270deg,
+    #6020a0 290deg,
+    #1a0a30 310deg,
+    #0a1628 360deg
+  );
+  mask: radial-gradient(circle, transparent 56%, black 57%, black 100%);
+  -webkit-mask: radial-gradient(circle, transparent 56%, black 57%, black 100%);
+  opacity: 0.85;
+  transition: opacity 0.3s;
+}
+
+.time-dial:hover .dial-track {
+  opacity: 1;
+}
+
+.dial-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-card);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  transition: background-color 0.6s ease, border-color 0.6s ease;
+}
+
+.dial-hour {
+  font-family: var(--font-heading);
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1;
+  transition: color 0.6s ease;
+}
+
+.dial-h {
+  font-family: var(--font-heading);
+  font-size: 0.6875rem;
+  font-weight: 400;
+  color: var(--text-muted);
+  line-height: 1;
+  margin-top: 2px;
+  transition: color 0.6s ease;
+}
+
+.dial-indicator {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  pointer-events: none;
+}
+
+.dial-sun-moon {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(circle, #fbbf24, #f59e0b);
+  box-shadow: 0 0 12px #fbbf24, 0 0 24px rgba(251, 191, 36, 0.4);
+  transition: background 0.4s, box-shadow 0.4s;
+}
+
+.dial-tooltip {
+  position: absolute;
+  bottom: -1.75rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.625rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  letter-spacing: 0.05em;
+  opacity: 0;
+  transition: opacity 0.3s, color 0.6s ease;
+  pointer-events: none;
+}
+
+.time-dial:hover .dial-tooltip {
+  opacity: 1;
+}
+
+@media (max-width: 768px) {
+  .time-dial {
+    width: 80px;
+    height: 80px;
+    bottom: 1.5rem;
+    right: 1.5rem;
+  }
+
+  .dial-center {
+    width: 44px;
+    height: 44px;
+  }
+
+  .dial-hour {
+    font-size: 0.9375rem;
+  }
+
+  .dial-indicator {
+    width: 13px;
+    height: 13px;
   }
 }
