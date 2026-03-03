@@ -130,7 +130,7 @@ function getThemeForHour(hour) {
     mtFar: lerpColors(before.mtFar, after.mtFar, t),
     mtMid: lerpColors(before.mtMid, after.mtMid, t),
     mtNear: lerpColors(before.mtNear, after.mtNear, t),
-    treeline: lerpColor(before.treeline, after.treeline, t),
+
     stars: lerp(before.stars, after.stars, t),
     moon: lerp(before.moon, after.moon, t),
     isDark: t < 0.5 ? before.isDark : after.isDark,
@@ -161,9 +161,6 @@ function applyTheme(theme) {
   setStops('#mountain-far', theme.mtFar);
   setStops('#mountain-mid', theme.mtMid);
   setStops('#mountain-near', theme.mtNear);
-
-  const treeline = document.getElementById('treeline');
-  if (treeline) treeline.setAttribute('fill', theme.treeline);
 
   const starsGroup = document.querySelector('.stars');
   if (starsGroup) starsGroup.setAttribute('opacity', theme.stars);
